@@ -16,7 +16,7 @@ export default function App() {
     fetch(API + url, {
       method,
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      credentials: "include", // важно для HttpOnly cookie
       body: body ? JSON.stringify(body) : null,
     }).then((r) => r.json())
 
