@@ -1,57 +1,58 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
-const API = import.meta.env.VITE_DOMEN
+const API = import.meta.env.VITE_DOMEN; // например http://localhost:4000
 
 export default function App() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
-  const [regName, setRegName] = useState("")
-  const [regUser, setRegUser] = useState("")
-  const [regPass, setRegPass] = useState("")
+  const [regName, setRegName] = useState("");
+  const [regUser, setRegUser] = useState("");
+  const [regPass, setRegPass] = useState("");
 
-  const [logUser, setLogUser] = useState("")
-  const [logPass, setLogPass] = useState("")
+  const [logUser, setLogUser] = useState("");
+  const [logPass, setLogPass] = useState("");
 
+  // Универсальная функция для запросов
   const api = (url, method = "GET", body = null) =>
     fetch(API + url, {
       method,
       headers: { "Content-Type": "application/json" },
       credentials: "include", // важно для HttpOnly cookie
       body: body ? JSON.stringify(body) : null,
-    }).then((r) => r.json())
+    }).then((r) => r.json());
 
-  // register
+  // Register
   const register = () => {
     api("/register", "POST", {
       name: regName,
       username: regUser,
       password: regPass,
     }).then((res) => {
-      if (res.name) setUser(res.name)
-    })
-  }
+      if (res.name) setUser(res.name);
+    });
+  };
 
-  // login
+  // Login
   const login = () => {
     api("/login", "POST", {
       username: logUser,
       password: logPass,
     }).then((res) => {
-      if (res.name) setUser(res.name)
-    })
-  }
+      if (res.name) setUser(res.name);
+    });
+  };
 
-  // logout
+  // Logout
   const logout = () => {
-    api("/logout", "POST").then(() => setUser(null))
-  }
+    api("/logout", "POST").then(() => setUser(null));
+  };
 
-  // auth check on page load
+  // Check auth on load
   useEffect(() => {
     api("/me").then((res) => {
-      if (res.name) setUser(res.name)
-    })
-  }, [])
+      if (res.name) setUser(res.name);
+    });
+  }, []);
 
   return (
     <div style={{ padding: 20 }}>
@@ -74,5 +75,5 @@ export default function App() {
 
       {user && <button onClick={logout}>Выйти</button>}
     </div>
-  )
+  );
 }
